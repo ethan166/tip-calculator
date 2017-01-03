@@ -1,21 +1,50 @@
 <?php
-	$percent_words = array("10%", "15%", "20%");
-	$percentages = array(0.1, 0.15, 0.2);
+	
+	$percent_words = array("10%", "15%", "20%", "Custom:");
+	$percentages = array(0.1, 0.15, 0.2, "custom");
 	$wrongInput = false;
+	$wrong_tip_input = false;
+
 	if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
-
+		// accepting post requests
 		$bill = $_POST["bill"];
 		$tip_percent = $_POST["tip_percent"];
+		$custom_tip = $_POST["custom"];
+
+		// checking input text number validation
 		if($bill == "" OR !is_numeric($bill) OR $bill < 0) {
 			$wrongInput = true;
 		}
 
-		if($wrongInput == false)
+		if($tip_percent == "custom")
 		{
-			$calculated_tip = $bill * $tip_percent;
+			if($custom_tip == "" OR !is_numeric($custom_tip) OR $custom_tip <= 0 )
+			{
+				$wrong_tip_input = true;
+			}
 		}
 
+		// converting the percentages into decimals for custom tip
+		if($tip_percent == "custom" && isset($custom_tip) && $wrong_tip_input == false)
+		{
+		     $calculated_custom_tip = $custom_tip / 100;
+
+		}
+
+		// tip calculation 
+		if($wrongInput == false && $wrong_tip_input == false)
+		{	
+
+			if(isset($calculated_custom_tip))
+			{	
+				$calculated_tip = $bill * $calculated_custom_tip;	
+			} else {
+				$calculated_tip = $bill * $tip_percent;	
+			}	
+		}
+
+		// showing the output
 		if(isset($calculated_tip)) {
 			$total = $calculated_tip + $bill;
 
@@ -83,8 +112,13 @@
 			text-align: center;
 
 		}
-		#input_field {
-			width: 70px;
+		input[type=text] {
+			width: 80px;
+		}
+		.error_input
+		{
+			border-color:red;
+			color:red;
 		}
 		
 		
@@ -98,21 +132,33 @@
 			<div class="myborder">
 			<h2>Tip Calculator</h2>
 			<br>
+
 				<form method="post" action="index.php">
-					<label  <?php if($wrongInput) echo "style='color:red'" ?> for="bill">Bill subtotal $:</label>
-					<input id="input_field" <?php if($wrongInput) echo "style='border-color:red'" ?> type="text" id="bill" name="bill" value=<?php if (isset($bill)) echo $bill;?> >
+					<label  <?php if($wrongInput) echo "class='error_input'" ?> for="bill">Bill subtotal $:</label>
+					<input  <?php if($wrongInput) echo "class='error_input'" ?> type="text" id="bill" name="bill" value=<?php if (isset($bill)) echo $bill;?> >
 					
 					<br><br>
-					<label for="tip_percent">Tip percentage : </label><br>
-					<br>
-					<?php for($i = 0; $i < 3; $i++) { ?>
-					 <label><input type="radio" name="tip_percent" <?php if (isset($tip_percent) && $tip_percent==$percentages[$i]) { echo "checked"; } ?> value=<?php echo $percentages[$i]; ?> />
-					 <?php echo $percent_words[$i]; ?>
+					<label <?php if($wrong_tip_input) echo "class='error_input'" ?> for="tip_percent">Tip percentage : </label><br>
+					<?php for($i = 0; $i < 4; $i++) { ?>
+					 <label <?php if($wrong_tip_input) echo "class='error_input'" ?> ><br><input <?php if($wrong_tip_input) echo "class='error_input'" ?> type="radio" name="tip_percent" <?php if (isset($tip_percent) && $tip_percent==$percentages[$i]) { echo "checked"; } ?> value=<?php echo $percentages[$i]; ?> />
+					 <?php 
+					 	
+					 	if($i == 3)
+					 	{ ?>
+					 	  <label <?php if($wrong_tip_input) echo "class='error_input'" ?> for='custom'><?php  echo $percent_words[$i];  ?>
+					 	  <input <?php if($wrong_tip_input) echo "class='error_input'" ?> type='text' id='custom' name='custom' value=<?php if (isset($custom_tip)) echo $custom_tip; ?> > % </label>
+					 	
+					 	<?php  } else { 
+					 		echo $percent_words[$i];
+					      } ?>
+
+					  
 					</label>
 					<?php } ?>
 
 					<div class="button_box"><button type="submit" />Submit</button></div>	
-				
+					</form>
+				<!-- output div -->
 				<?php if(isset($calculated_tip)) { ?>
 				<div class="tip_output"> <pre><?php if (isset($output)) {echo $output;} ?></pre></div>
 				<?php } ?>
