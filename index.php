@@ -13,7 +13,10 @@
 		$tip_percent = $_POST["tip_percent"];
 		$custom_tip = $_POST["custom"];
 		$split_bill = $_POST["split_bill"];
-
+		if(isset($_POST["roundup"]))
+		{
+			$roundup = true;
+		}
 		// checking input text number validation
 		if($bill == "" OR !is_numeric($bill) OR $bill < 0) {
 			$wrongInput = true;
@@ -53,24 +56,28 @@
 			}	
 		}
 
-		
+
 		// showing the output
 		if(isset($calculated_tip)) {
 			$total = $calculated_tip + $bill;
-
+			
 		$output ="";
 		$output .= "Tip: $" . $calculated_tip ."\n";
 		$output .= "Total: $" . $total;
 
 		// splitting the tip and the total
-		if(isset($split_bill) && $split_bill > 1 && $wrong_split_input == false)
-		{
-			$each_tip = $calculated_tip / $split_bill;
-			$each_total = $total / $split_bill;
-			$output .= "\nTip each: $ " . $each_tip;
-			$output .= "\nTotal each: $" . $each_total;
-		}
-		
+			if(isset($split_bill) && $split_bill > 1 && $wrong_split_input == false)
+			{
+
+				$each_tip = $calculated_tip / $split_bill;
+				$each_total = $total / $split_bill;
+				if($roundup)
+				{
+					$each_total = round($each_total, 0, PHP_ROUND_HALF_UP);
+				}
+				$output .= "\nTip each: $ " . $each_tip;
+				$output .= "\nTotal each: $" . $each_total;
+			}
 		}
 		
 	}
@@ -84,9 +91,16 @@
 		body {
 			font-family: Arial, Helvetica, sans-serif;
 		}
-		button[type=submit] {
+		.submit {
 			width: 70px;
 		    margin: 12px 0;
+		}
+		.round {
+			width: 50px;
+		}
+		.reset {
+			width:50px;
+			margin-left:15px;
 		}
 		.topbar {
 			width:350px;
@@ -175,14 +189,28 @@
 					<br><br>
 					<label <?php if($wrong_split_input) echo "class='error_input'" ?> for="split_bill">Split: <input type='text' name="split_bill" value=<?php if (isset($split_bill)) echo $split_bill; else echo "1"; ?> > person(s)</label>
 
-					<div class="button_box"><button type="submit" />Submit</button></div>	
+					<div class="button_box"><button  class="submit" type="submit" />Submit</button></div>	
+					<?php if(isset($output)) { ?>
+
+					<button class="reset" type="submit" name="reset">Reset</button>
+					<label style="font-size:12px">Round total each?</lable>
+					<button class="round" type="submit" name="roundup">Yes</button>
+					
+					
+					
+					
+					<?php } ?>
+					<?php if(isset($calculated_tip)) { ?>
+				<div class="tip_output"> <pre><?php if (isset($output)) {echo $output;} ?></pre></div>
+
+				<?php } ?>
+
 				</form>
 				<!-- end of form -->
 
+
 				<!-- output div -->
-				<?php if(isset($calculated_tip)) { ?>
-				<div class="tip_output"> <pre><?php if (isset($output)) {echo $output;} ?></pre></div>
-				<?php } ?>
+				
 			</div>
 		</div>
 </div>
