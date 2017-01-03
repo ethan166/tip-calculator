@@ -35,8 +35,8 @@
 		body {
 			font-family: Arial, Helvetica, sans-serif;
 		}
-		input[type=submit] {
-			width: 80px;
+		button[type=submit] {
+			width: 70px;
 		    margin: 12px 0;
 		}
 		.topbar {
@@ -66,6 +66,7 @@
 		 padding:10px;
 		}
 		.myborder h2 {
+			font-family: Lobster;
 			text-align: center;
 		}
 		.button_box {
@@ -105,11 +106,12 @@
 					<label for="tip_percent">Tip percentage : </label><br>
 					<br>
 					<?php for($i = 0; $i < 3; $i++) { ?>
-					 <input type="radio" name="tip_percent" <?php if (isset($tip_percent) && $tip_percent==$percentages[$i]) { echo "checked"; } ?> value=<?php echo $percentages[$i]; ?> />
+					 <label><input type="radio" name="tip_percent" <?php if (isset($tip_percent) && $tip_percent==$percentages[$i]) { echo "checked"; } ?> value=<?php echo $percentages[$i]; ?> />
 					 <?php echo $percent_words[$i]; ?>
+					</label>
 					<?php } ?>
 
-					<div class="button_box"><input type="submit" value="Submit" /></div>	
+					<div class="button_box"><button type="submit" />Submit</button></div>	
 				
 				<?php if(isset($calculated_tip)) { ?>
 				<div class="tip_output"> <pre><?php if (isset($output)) {echo $output;} ?></pre></div>
