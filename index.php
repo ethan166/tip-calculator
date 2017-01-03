@@ -60,7 +60,10 @@
 		// showing the output
 		if(isset($calculated_tip)) {
 			$total = $calculated_tip + $bill;
-			
+			if($roundup)
+				{
+					$total = round($total, 0, PHP_ROUND_HALF_UP);
+				}
 		$output ="";
 		$output .= "Tip: $" . $calculated_tip ."\n";
 		$output .= "Total: $" . $total;
@@ -139,10 +142,12 @@
 		.tip_output {
 			width:240px;
 			margin-left: 18px;
+			margin-top:3px;
 			margin-bottom: 10px;
+			font-size: 13px;
 			border-style:solid;
 			border-width: 1px;
-			color:#41B3F4;
+			color:blue;
 			text-align: center;
 
 		}
@@ -193,7 +198,7 @@
 					<?php if(isset($output)) { ?>
 
 					<button class="reset" type="submit" name="reset">Reset</button>
-					<label style="font-size:12px">Round total each?</lable>
+					<label style="font-size:12px">Round the totals?</lable>
 					<button class="round" type="submit" name="roundup">Yes</button>
 					
 					

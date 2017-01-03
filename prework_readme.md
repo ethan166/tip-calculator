@@ -22,7 +22,7 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 * [x] List anything else that you can get done to improve the functionality!
-- Added the rounding the total each button to help user clearly decide the exact amount and also a reset button to see the original value.
+- Added the rounding the totals button to help user decide the exact amount and also a reset button to see the original values.
 
 ## Video Walkthrough
 
