@@ -1,6 +1,6 @@
-#pre-work - tipassasin
+#pre-work - tipassassin
 
-tipassasin  is a tip calculator PHP page.
+tipassassin  is a tip calculator PHP page.
 
 Submitted by: Kyaw Tun
 Time spent: about 15 hours spent in total
@@ -35,6 +35,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+- I have to learn php from scratch.
 
 ## License
 

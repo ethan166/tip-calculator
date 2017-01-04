@@ -147,7 +147,7 @@
 			font-size: 13px;
 			border-style:solid;
 			border-width: 1px;
-			color:blue;
+			color:#2998E4;
 			text-align: center;
 
 		}
